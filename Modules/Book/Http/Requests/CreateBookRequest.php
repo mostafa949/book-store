@@ -18,6 +18,7 @@ class CreateBookRequest extends FormRequest
             'name' => 'required|min:3',
             'year' => 'required|integer|digits:4',
             'page' => 'required|integer',
+            'category_id' => 'exists:categories,id',
             'publisher_id' => 'exists:publishers,id',
             'authors' => 'array',
             'authors.*' => 'exists:authors,id'

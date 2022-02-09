@@ -18,6 +18,10 @@ class CreatePublishersTable extends Migration
             $table->string('identifier')->unique();
             $table->string('first_name');
             $table->string('last_name');
+            $table->longText('description')->nullable();
+            $table->string('image_path');
+            $table->foreignId('admin_id')->constrained('admins');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

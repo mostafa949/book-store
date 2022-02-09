@@ -5,12 +5,13 @@ namespace Modules\Author\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Author\Database\factories\AuthorFactory;
 use Modules\Book\Entities\BookAuthor;
 
 class Author extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * @var array
@@ -19,6 +20,9 @@ class Author extends Model
         'identifier',
         'first_name',
         'last_name',
+        'description',
+        'image_path',
+        'admin_id',
     ];
 
     protected static function newFactory(): AuthorFactory

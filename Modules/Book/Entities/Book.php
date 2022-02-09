@@ -20,9 +20,13 @@ class Book extends Model
      */
     protected $fillable = [
         'isbn',
-        'name',
+        'slug',
+        'title',
+        'description',
+        'image_path',
         'year',
         'page',
+        'category_id',
         'publisher_id',
     ];
 

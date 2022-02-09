@@ -13,4 +13,5 @@
 
 Route::name('books.')->group(function() {
     Route::resource('/books', 'BookController');
+    Route::resource('/categories', 'CategoriesController');
 });

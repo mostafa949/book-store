@@ -4,5 +4,7 @@
     "Author": true,
     "Customer": true,
     "Order": true,
-    "Shipping": true
+    "Shipping": true,
+    "Admin": true,
+    "User": true
 }

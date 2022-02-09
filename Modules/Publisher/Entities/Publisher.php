@@ -5,12 +5,13 @@ namespace Modules\Publisher\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Book\Entities\Book;
 use Modules\Publisher\Database\factories\PublisherFactory;
 
 class Publisher extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * @var array
@@ -19,6 +20,9 @@ class Publisher extends Model
         'identifier',
         'first_name',
         'last_name',
+        'description',
+        'image_path',
+        'admin_id',
     ];
 
     protected static function newFactory(): PublisherFactory

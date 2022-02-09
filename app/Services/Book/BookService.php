@@ -3,11 +3,14 @@
 namespace App\Services\Book;
 
 use App\Repository\Book\BookRepository;
+use App\Traits\general\MediaTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
 class BookService
 {
+
+    use MediaTrait;
 
     protected $bookRepository;
 
@@ -25,7 +28,10 @@ class BookService
     // store new category and add image category in storage folder
     public function store($request)
     {
-        $this->bookRepository->store($request);
+        if ($file = $request->file('image')) {
+            $imageName = $this->uploads($file, 'images/books/', $request->title);
+            $this->bookRepository->store($request, $imageName);
+        }
         return $this->all();
     }
 
@@ -35,22 +41,28 @@ class BookService
             $item = $this->bookRepository->show($book);
             return response(['data' => $item, 'status' => 200]);
         } catch (ModelNotFoundException $e) {
-            return response(['message' => 'Book : ' . $book->name . 'Not Found!', 'status' => 404]);
+            return response(['message' => 'Book Not Found!', 'status' => 404]);
         }
     }
 
-    public function edit($category)
+    public function edit($book)
     {
-        return $this->bookRepository->edit($category);
+        return $this->bookRepository->edit($book);
     }
 
     public function update($request, $book)
     {
         try {
-            $item = $this->bookRepository->update($request, $book);
-            return response(['data' => $item, 'status' => 200]);
+            if ($file = $request->file('image')) {
+                $this->delete('images/books/', $book->image_path);
+                $fileName = $this->updateUpload($file, $book->image_path, 'images/blog/categories/');
+            } else {
+                $fileName = $book->image_path;
+            }
+            $book = $this->bookRepository->update($request, $fileName, $book);
+            return response(['data' => $book, 'status' => 200]);
         } catch (ModelNotFoundException $e) {
-            return response(['message' => 'Publisher : ' . $book->name . 'Not Found!', 'status' => 404]);
+            return response(['message' => 'Book Not Found!', 'status' => 404]);
         }
     }
 
@@ -60,7 +72,7 @@ class BookService
             $this->bookRepository->destroy($book);
             return $this->all();
         } catch (ModelNotFoundException $e) {
-            return response(['message' => 'Book : ' . $book->name . 'Not Found!', 'status' => 404]);
+            return response(['message' => 'Book Not Found!', 'status' => 404]);
         }
 
     }
